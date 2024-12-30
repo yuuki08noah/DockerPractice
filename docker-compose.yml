@@ -1,0 +1,32 @@
+services:
+  front:
+    image: front:v1.0
+    ports:
+      - "8002:8002"
+    env_file:
+      - mysql.env
+    networks:
+      - front-to-back
+  back:
+    image: back:v1.0
+    ports:
+      - "8000:8000"
+    env_file:
+    - mysql.env
+    networks:
+      - front-to-back
+      - back-to-db
+  database:
+    image: mysql:latest
+    env_file:
+      - mysql.env
+    ports:
+      - "8001:3306"
+    networks:
+      - back-to-db
+
+networks:
+  front-to-back:
+    driver: bridge
+  back-to-db:
+    driver: bridge
